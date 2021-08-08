@@ -80,11 +80,28 @@ function load() {
 }
 
 function closeModal() {
+  eventTitleInput.classList.remove("error");
   newEventModal.style.display = "none";
   backDrop.style.display = "none";
   eventTitleInput.value = "";
   clicked = null;
   load();
+
+  function saveEvent() {
+    if (eventTitleInput.value) {
+      eventTitleInput.classList.remove("error");
+
+      events.push({
+        date: clicked,
+        title: eventTitleInput.value,
+      });
+
+      localStorage.setItem("events", JSON.stringify(events));
+      closeModal();
+    } else {
+      eventTitleInput.classList.add("error");
+    }
+  }
 }
 
 function initButtons() {
@@ -98,7 +115,7 @@ function initButtons() {
     load();
   });
 
-  document.getElementById("saveButton", () => {});
+  document.getElementById("saveButton").addEventListener("click", saveEvent);
   document.getElementById("cancelButton").addEventListener("click", closeModal);
 }
 
